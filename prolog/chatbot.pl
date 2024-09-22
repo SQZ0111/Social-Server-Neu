@@ -1,5 +1,5 @@
 % Helper Predicate
-% ----------------
+% *******************************************************
 % Convert a list of strings to a list of lowercase atoms
 strings_to_lower_atoms([], []).
 strings_to_lower_atoms([String|Strings], [Atom|Atoms]) :-
@@ -8,7 +8,7 @@ strings_to_lower_atoms([String|Strings], [Atom|Atoms]) :-
     strings_to_lower_atoms(Strings, Atoms).
 
 % Response Predicate
-% ------------------
+% **************************************************
 response(InputStrings) :-
     strings_to_lower_atoms(InputStrings, InputAtoms),
     (phrase(sentence(Classification, Person, Action), InputAtoms) ->
@@ -25,7 +25,7 @@ response(InputStrings) :-
     ).
 
 % Grammar Rules
-% -------------
+% **********************************
 % Sentence structures
 sentence(greeting_action, Person, Action) --> greeting, personalPronoun(Person), verb(Person), hitWord(Action).
 sentence(greeting_action_adjective, Person, _) --> greeting, verb(Person), personalPronoun(Person), adjective(Person).
@@ -41,7 +41,7 @@ sentence(question_action, Person, Action) --> questionWord, auxiliaryWord(Person
 sentence(question_action, Person, Action) --> questionWord, auxiliaryWord, personalPronoun(Person), verb(Action).
 sentence(action_only, _, Action) --> hitWord(Action).
 
-% greet your new god
+% greet your new god ************************************
 greeting --> [hi].
 greeting --> [hallo].
 greeting --> [howdy].
@@ -51,11 +51,11 @@ greeting --> [morgen].
 greeting --> [hello].
 
 
-%questions are never dumb
+% questions are never dumb ******************************
 questionWord --> [how].
 questionWord --> [where].
 
-% pronouns and names
+% pronouns and names *******************************
 personalPronoun(user) --> [i].
 personalPronoun(bot) --> [you].
 personalPronoun(bot) --> [computer].
@@ -82,15 +82,15 @@ verb(post) --> [post].
 verb(reset) --> [reset].
 verb(comment) --> [comment].
 
-% Nouns
-noun --> [creator].
+% Nouns ***************************************************
+noun --> [creator]. %do not forget that!
 noun --> [intelligence].
 
-% Determiner
+% Determiner ****************************************
 determiner --> [a].
 determiner --> [the].
 
-% Auxiliary Words are not known by talahons
+% Auxiliary Words are not known by talahons *************************************+
 auxiliaryWord --> [can].
 auxiliaryWord --> [must].
 auxiliaryWord(user) --> [can].
@@ -99,7 +99,7 @@ auxiliaryWord(bot) --> [can].
 auxiliaryWord(bot) --> [do].
 
 
-% Hit Words (Actions)
+% Hit Words (Actions) ********************************************
 hitWord(help) --> [help].
 hitWord(comment) --> [comment].
 hitWord(comments) --> [comments].
@@ -110,7 +110,7 @@ hitWord(again) --> [again].
 hitWord(repeat) --> [repeat].
 hitWord(last_answer) --> [last, answer].
 
-% Adjectives
+% Adjectives **********************************************
 adjective(bot) --> [intelligent].
 adjective(bot) --> [dumb].
 adjective(bot) --> [creative].
@@ -118,7 +118,7 @@ adjective(bot) --> [evil].
 adjective(bot) --> [artificial].
 
 % Response Generation
-% -------------------
+% **************************************************
 generate_response(Classification, Person, Action) :-
     nonvar(Classification), nonvar(Person), nonvar(Action),
     Classification == greeting_action,
@@ -190,7 +190,7 @@ generate_response(Classification, Person, Action) :-
     !,
     generate_question_response(Action).
 
-%helpers
+% elpers ***********************************************
 generate_question_response(register) :-
     write("To register, please visit the registration page and fill out the required credentials.").
 
@@ -225,7 +225,7 @@ generate_response(Classification, _, Action) :-
     !,
     write('You want to ~w. How can I assist you further?', [Action]).
 
-% Default Response
+% default  ***********************************
 generate_response(_, _, _) :-
     write('Please ask me something I could understand.').
 
